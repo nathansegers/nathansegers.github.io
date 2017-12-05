@@ -1,0 +1,17 @@
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: $footer_height;
+
+    text-align: center;
+
+    background-color: $color-regal_red;
+    & .footer__text {
+        padding: calc((#{$footer_height} - 16px) / 2) 0px;
+        line-height: 16px;
+        color: $white;
+    }
+}

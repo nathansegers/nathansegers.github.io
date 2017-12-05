@@ -1,0 +1,30 @@
+.cls-4, .cls-6, .cls-5 {
+    fill: $color-red;
+}
+.cls-6 {
+    stroke: $color-red;
+}
+.cls-2, .cls-3 {
+    fill: $white;
+}
+
+.section__left svg {
+    height: 200vh;
+}
+
+.invisible {
+    visibility: hidden;
+}
+.visible {
+    visibility: visible;
+}
+
+.clicked {
+    & path {
+        fill: $color-green;
+    }
+    & > text {
+        visibility: visible;
+        fill: $white;
+    }
+}
