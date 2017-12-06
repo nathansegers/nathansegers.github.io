@@ -1,5 +1,5 @@
 .section__left svg {
-    height: 200vh;
+    height: 100vh;
 }
 
 .cls-4,
@@ -19,11 +19,13 @@ text {
     fill: $black;
 }
 
-
-
 [class*="text_"],
 [class*="pin_"] {
     visibility: hidden;
+    
+}
+.pin_shown {
+    visibility: visible;
 }
 
 .continent__hovered,
@@ -41,6 +43,29 @@ text {
         fill: $white;
         &.island {
             fill: $black;
+        }
+    }
+}
+
+
+.svg__tools {
+    position: absolute;
+    display: block;
+    
+    bottom: calc(#{$footer_height});
+    left: 0px;
+    
+    padding: 15px;
+
+    line-height: 1.5em;
+    
+    background-color: rgba(lighten($white, 5), 0.7);
+
+    box-sizing: border-box;
+    & .svg__tools__line {
+        display: block;
+        & .svg__tools__checkbox {
+            margin-right: 10px;
         }
     }
 }

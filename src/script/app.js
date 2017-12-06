@@ -77,8 +77,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
             } else {
                 elem.classList.add("land__clicked");
             }
-            CheckDependencies("click", elem);            
             // Check if there are other elements that depend on this one (For example: The Neck depends on the North but not the other way around)
+            CheckDependencies("click", elem);            
+
+            ScrollToElement(elem.id);
+            
         });
     });
 
@@ -98,35 +101,114 @@ document.addEventListener("DOMContentLoaded", function (event) {
             } else {
                 elem.parentElement.classList.add("continent__clicked");            
             }
+
+
         });
     });
+
+    function CheckDependencies(type, elem) {
+        var class_to_add = "";
+        var remove = false;
+        switch (type) {
+            case "mouseover":
+                class_to_add = "land__hovered";
+                break;
+            case "mouseout":
+                class_to_add = "land__hovered";
+                remove = true;
+                break;
+            case "click":
+                class_to_add = "land__clicked";
+                break;
+            default:
+                break;
+        }
+        var class_name = ".part_of_" + elem.id;
+        var all_dependend_lands = document.querySelectorAll(class_name);
+        all_dependend_lands.forEach(function (object) {
+            if (remove == true) {
+                object.classList.remove(class_to_add);
+            } else {
+                object.classList.add(class_to_add);
+            }
+        });
+    }
+
+
+    //                      ---- Show cities ----
+    
+    // Get checkbox
+    var toggle_pins_checkbox = document.querySelector("#toggle_pins_checkbox");
+    // When checkbox is clicked ...
+    toggle_pins_checkbox.addEventListener("change", function() {
+        all_pins.forEach(function (object) {
+            if (object.classList.contains("pin_shown")) {
+                object.classList.remove("pin_shown");
+                document.querySelectorAll(".svg__tools__label")[1].innerHTML = "Click on a region to get more information."
+                toggle_pins_checkbox.nextElementSibling.innerHTML = "Show cities";
+            } else {
+                object.classList.add("pin_shown");
+                document.querySelectorAll(".svg__tools__label")[1].innerHTML = "Click on a region/city to get more information."                
+                toggle_pins_checkbox.nextElementSibling.innerHTML = "Hide cities";
+                
+            }
+        });
+    });
+
+
+    //                      ---- Zoom In SVG ----
+    var zoom_slider = document.querySelector("#zoom_svg_slider");
+    zoom_slider.addEventListener("change", function () {
+        ZoomSVG(zoom_slider.value);
+    });
+
+   
+
+
+    //                      ---- Measure the Scrollbar ----
+
+    // Create the measurement node
+    var scrollDiv = document.createElement("div");
+    scrollDiv.className = "scrollbar-measure";
+    document.body.appendChild(scrollDiv);
+
+    // Get the scrollbar width
+    var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+    console.info(scrollbarWidth);
+
+    // Delete the DIV 
+    document.body.removeChild(scrollDiv);
+
+
+    // Now we can use this scrollbarWidth for some elements:
+    var svg__tools__box = document.querySelector(".svg__tools");
+    svg__tools__box.style.bottom = 30 + scrollbarWidth + "px";
+
+// End "DOMContentLoaded"
 });
 
-function CheckDependencies(type, elem) {
-    var class_to_add = "";
-    var remove = false;
-    switch (type) {
-        case "mouseover":
-            class_to_add = "land__hovered";
-            break;
-        case "mouseout":
-            class_to_add = "land__hovered";
-            remove = true;
-            break;
-        case "click":
-            class_to_add = "land__clicked";        
-            break;
-        default:
-            break;
-    }
-    var class_name = ".part_of_" + elem.id;
-    var all_dependend_lands = document.querySelectorAll(class_name);
-    all_dependend_lands.forEach(function (object) {
-        if (remove == true) {
-            object.classList.remove(class_to_add);            
-        } else {
-            object.classList.add(class_to_add);
-        }
-    });
+
+function ScrollToElement(element_query) {
+    // Get the element
+    var element_to_scroll_to = document.querySelector("#" + element_query);
+    // Get the boundaries
+    var bounding_box = element_to_scroll_to.getBBox();
+    console.log(bounding_box);
+    // We want to scroll into our section__left
+    var papa = document.querySelector('.section__left');
+    // Our top position should be the top position of the element minus it's height
+    var scroll_to_top = bounding_box.y - (papa.clientHeight / 2);
+    // Our left position should be the left position of the element minus it's width
+    var scroll_to_left = bounding_box.x - (papa.clientWidth / 2)
+    // Scroll the "papa" element to those positions
+    papa.scrollTop = scroll_to_top;
+    papa.scrollLeft = scroll_to_left;
+    console.log("New position:")
+    console.log("Horizontal: " + papa.scrollTop + " | Vertical: " + papa.scrollLeft)
+}
+
+function ZoomSVG(zoom_value) {
+    var svg = document.querySelector("#game_of_thrones_world_map_svg");
+    svg.style.height = zoom_value + "vh";
 }
 

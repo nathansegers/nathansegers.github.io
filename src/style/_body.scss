@@ -1,4 +1,17 @@
 body {
     background-color: $white;
     overflow: hidden;
+    font-family: "Open Sans";
+}
+
+
+
+// This element is added to detect the height / width of a scrollbar through Javascript
+
+.scrollbar-measure {
+    width: 100px;
+    height: 100px;
+    overflow: scroll;
+    position: absolute;
+    top: -9999px;
 }
