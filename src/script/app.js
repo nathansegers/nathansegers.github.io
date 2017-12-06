@@ -63,9 +63,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
         // Do a function on mouse over
         elem.addEventListener("mouseover", function () {
             elem.classList.add("land__hovered");
+            CheckDependencies("mouseover", elem);
         });
         elem.addEventListener("mouseout", function() {
             elem.classList.remove("land__hovered"); 
+            CheckDependencies("mouseout",elem);
         })
         elem.addEventListener("click", function() {
             ResetAllClasses();
@@ -75,6 +77,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             } else {
                 elem.classList.add("land__clicked");
             }
+            CheckDependencies("click", elem);            
+            // Check if there are other elements that depend on this one (For example: The Neck depends on the North but not the other way around)
         });
     });
 
@@ -97,4 +101,32 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     });
 });
+
+function CheckDependencies(type, elem) {
+    var class_to_add = "";
+    var remove = false;
+    switch (type) {
+        case "mouseover":
+            class_to_add = "land__hovered";
+            break;
+        case "mouseout":
+            class_to_add = "land__hovered";
+            remove = true;
+            break;
+        case "click":
+            class_to_add = "land__clicked";        
+            break;
+        default:
+            break;
+    }
+    var class_name = ".part_of_" + elem.id;
+    var all_dependend_lands = document.querySelectorAll(class_name);
+    all_dependend_lands.forEach(function (object) {
+        if (remove == true) {
+            object.classList.remove(class_to_add);            
+        } else {
+            object.classList.add(class_to_add);
+        }
+    });
+}
 
