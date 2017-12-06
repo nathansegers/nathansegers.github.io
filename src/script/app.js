@@ -1,6 +1,10 @@
 'use strict';
 console.info("Hello there!")
 
+// We can use these elements as the variables from the SASS file _colors.scss if we want to.
+// var colors = {"Red": "#ff0000"}
+
+
 var all_characters = Array();
 var all_unique_cultures = ['Braavosi', 'Westeros', 'Valyrian', 'Stormlands', 'Ironborn', 'Andal', 'Northmen', 'Valemen', 'Reach', 'Dornish', 'Northern mountain clans', 'Rivermen', 'First Men', 'Westerman', 'Sistermen', 'Ghiscari', 'Crannogmen', 'Westerlands', 'Asshai', 'Rhoynar', 'Tyroshi', 'Myrish', 'Thenn', 'Free Folk', 'Dothraki', 'Norvoshi', 'Ibbenese', 'Summer Isles', 'Meereenese', 'Mountain clans', 'Astapori', 'Lysene', 'Qartheen', 'Lhazareen', 'Pentoshi', 'Naathi', 'Qohor'];
 
@@ -39,23 +43,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var all_lands = document.querySelectorAll("[class*=land_]");
     var all_pins = document.querySelectorAll("[class*=pin_]");
     var all_titles = document.querySelectorAll("[class*=text_]");
+    var all_continents = document.querySelectorAll(".continent");
 
-
-    HideAllPinsAndTitles();
+    ResetAllClasses();
 
     // Function to set all items to hidden;
-    function HideAllPinsAndTitles() {
-        all_titles.forEach(function (elem) {
-            elem.classList.remove("visible");
-            elem.classList.add("invisible");
-        });
-        all_pins.forEach(function (elem) {
-            elem.classList.remove("visible");
-            elem.classList.add("invisible");            
-        });
+    function ResetAllClasses() {
         all_lands.forEach(function (elem) {
-            elem.classList.remove("clicked");
-        })
+            elem.classList.remove("land__clicked");
+        });
+        all_continents.forEach(function (elem) {
+            elem.parentElement.classList.remove("continent__clicked");
+        });
     }
 
 
@@ -63,43 +62,39 @@ document.addEventListener("DOMContentLoaded", function (event) {
     all_lands.forEach(function (elem) {
         // Do a function on mouse over
         elem.addEventListener("mouseover", function () {
-            // Show the title of this element
-            ShowLandTitle(elem.id);
+            elem.classList.add("land__hovered");
         });
         elem.addEventListener("mouseout", function() {
-            // Show the title of this element
-            HideLandTitle(elem.id);
+            elem.classList.remove("land__hovered"); 
         })
         elem.addEventListener("click", function() {
+            ResetAllClasses();
             // We only want our clicked element to be visible, so we hide all the rest
-            HideAllPinsAndTitles();
-            ObjectClicked(elem);
+            if (elem.classList.contains("land__clicked")) {
+                elem.classList.remove("land__clicked");
+            } else {
+                elem.classList.add("land__clicked");
+            }
         });
+    });
 
+    // For each continent title
+    all_continents.forEach(function (elem) {
+        elem.addEventListener("mouseover", function() {
+            elem.parentElement.classList.add("continent__hovered");
+        });
+        elem.addEventListener("mouseout", function() {
+            elem.parentElement.classList.remove("continent__hovered");            
+        });
+        elem.addEventListener("click", function () {
+            ResetAllClasses();
+            // We only want our clicked element to be visible, so we hide all the rest
+            if (elem.parentElement.classList.contains("continent__clicked")) {
+                elem.parentElement.classList.remove("continent__clicked");            
+            } else {
+                elem.parentElement.classList.add("continent__clicked");            
+            }
+        });
     });
 });
-
-function ShowLandTitle(land_id) {
-    var land_title = document.querySelector(".text_" + land_id);
-    land_title.classList.remove("invisible");
-    land_title.classList.add("visible");
-}
-function HideLandTitle(land_id) {
-    var land_title = document.querySelector(".text_" + land_id);
-    land_title.classList.remove("visible");
-    land_title.classList.add("invisible");
-}
-function ObjectClicked(object) {
-    var object_title = document.querySelector(".text_" + object.id);
-    // Show land title
-    object.classList.add("clicked");
-    console.log(object_title.classList);
-    object_title.classList.add("visible");
-    console.log(object_title.classList);
-    
-    // Set the fill color of this object to RED
-    console.log(object);
-}
-
-
 

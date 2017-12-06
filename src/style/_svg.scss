@@ -1,30 +1,46 @@
-.cls-4, .cls-6, .cls-5 {
+.section__left svg {
+    height: 200vh;
+}
+
+.cls-4,
+.cls-6,
+.cls-5 {
     fill: $color-red;
 }
 .cls-6 {
     stroke: $color-red;
 }
-.cls-2, .cls-3 {
+.cls-2,
+.cls-3 {
     fill: $white;
 }
 
-.section__left svg {
-    height: 200vh;
+text {
+    fill: $black;
 }
 
-.invisible {
+
+
+[class*="text_"],
+[class*="pin_"] {
     visibility: hidden;
 }
-.visible {
-    visibility: visible;
-}
 
-.clicked {
-    & path {
+.continent__hovered,
+.continent__clicked,
+.land__clicked,
+.land__hovered {
+    
+    path,
+    polygon {
         fill: $color-green;
+        stroke: $color-green;
     }
-    & > text {
+    text {
         visibility: visible;
         fill: $white;
+        &.island {
+            fill: $black;
+        }
     }
 }
