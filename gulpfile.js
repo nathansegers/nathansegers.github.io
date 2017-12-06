@@ -49,6 +49,6 @@ function onError(err) {
 gulp.task( 'default', function() {
 	gulp.watch( './src/**/*.scss', ['css']);
 	gulp.watch( './src/script/*.js', ['script']);
-	gulp.watch( './dist/*.html', ['html']);
+	gulp.watch( './*.html', ['html']);
 	livereload.listen();
 });
