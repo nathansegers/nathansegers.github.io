@@ -27,7 +27,7 @@ gulp.task("dev-ready", function() {
 
 gulp.task('script', function() {
 	gulp.src('./src/script/**/*.js')
-	  .pipe(concat('app.js'))
+	  .pipe(concat('app.js'))			// Concat will make sure it's all concatenated into one file
 	  .pipe(rename({suffix: '.min'}))
 	  .pipe(uglify())
 	  .on('error', onError)
