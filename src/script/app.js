@@ -1,8 +1,9 @@
 'use strict';
 console.info("Hello there!")
 
-
 document.addEventListener("DOMContentLoaded", function (event) {
+
+//#region "SETUP"
     // We load all the elements into our variables
     all_lands = document.querySelectorAll("[class*=land_]");
     all_pins = document.querySelectorAll("[class*=pin_]");
@@ -11,7 +12,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     // Clean start!!
     ResetAllClasses();
-
+//#endregion
+//#region "Events for LANDS & CONTINENTS"
 
     // For each land-object
     all_lands.forEach(function (elem) {
@@ -29,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             ToggleClass(elem, "land__clicked");
             // Check if there are other elements that depend on this one (For example: The Neck depends on the North but not the other way around)
             CheckDependencies("click", elem);
-            QueryAPI(elem);
+            QueryRegion(elem);
             
         });
     });
@@ -48,13 +50,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
             QueryAPI(elem.parentElement);
         });
     });
+//#endregion
 
 
+//#region "Scrollbar"
 
     //                      ---- Measure the Scrollbar ----
     MeasureScrollBar();
 
-// End "DOMContentLoaded"
+//#endregion
+
 });
 
 
@@ -81,8 +86,6 @@ function ToggleClass(elem, class_name) {
         elem.classList.add(class_name);
     }
 }
-
-
 
 // Function to set remove all the classes to the default
 function ResetAllClasses() {

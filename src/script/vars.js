@@ -4,7 +4,7 @@
 // var colors = {"Red": "#ff0000"}
 
 
-var characters_to_show = Array();
+var all_characters = Array();
 var cultures = {
     "Braavos": "Braavosi",
     "Westeros": ["Westeros", "Andal", "First Men", "Rhoynar"],
