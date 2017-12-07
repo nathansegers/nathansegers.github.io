@@ -1,0 +1,84 @@
+.card__wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-flow: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: center;
+    align-self: center;
+    align-items: center;
+}
+
+.card {
+    width: 30%;
+    height: 150px;
+    background-color: $color-yellow;
+    padding: 5px 10px;
+    margin-bottom: 15px;
+
+    .card__header {
+        padding: 10px 0;
+        margin: 0 5px;
+
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 0;
+
+        border-bottom: solid 1px $black;
+
+        h1{
+            display: inline-block;
+
+            font-size: 1.25rem;
+
+        }
+        .fa {
+            font-size: 1rem;
+        }
+
+    }
+    .card__section {
+        padding: 10px 5px;
+
+        .card__section__line {
+            display: block;
+            clear: right;
+            padding: 5px 0;
+
+            &.card__section__line__divided {
+                // When the card__section__line has multiple elements, we have to reset the font-size to 0 because the elements have display: inline-block
+                font-size: 0;
+            }
+
+            .card__section__line__half {
+                display: inline-block;
+                
+                // We need to have 1 px free
+                width: calc(50% - 1px);
+
+                // Reset the font-size back to 1rem
+                font-size: 1rem;
+                
+                // The first child gets special treatment
+                &:first-child {
+                    width: 50%;
+                    border-right: solid 1px $black;
+                    box-sizing: border-box;
+                    padding-right: 5px;
+                }
+                &:last-child {
+                    padding-left: 5px;
+                    box-sizing: border-box;
+                    
+                }
+            }
+
+            .pull-right {
+                font-weight: bold;
+            }
+        }
+    }
+
+}

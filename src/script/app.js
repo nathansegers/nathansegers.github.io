@@ -4,27 +4,69 @@ console.info("Hello there!")
 // We can use these elements as the variables from the SASS file _colors.scss if we want to.
 // var colors = {"Red": "#ff0000"}
 
-
 var all_characters = Array();
-var all_unique_cultures = ['Braavosi', 'Westeros', 'Valyrian', 'Stormlands', 'Ironborn', 'Andal', 'Northmen', 'Valemen', 'Reach', 'Dornish', 'Northern mountain clans', 'Rivermen', 'First Men', 'Westerman', 'Sistermen', 'Ghiscari', 'Crannogmen', 'Westerlands', 'Asshai', 'Rhoynar', 'Tyroshi', 'Myrish', 'Thenn', 'Free Folk', 'Dothraki', 'Norvoshi', 'Ibbenese', 'Summer Isles', 'Meereenese', 'Mountain clans', 'Astapori', 'Lysene', 'Qartheen', 'Lhazareen', 'Pentoshi', 'Naathi', 'Qohor'];
+var cultures = {
+    "Braavos": "Braavosi",
+    "Westeros": ["Westeros", "Andal", "First Men", "Rhoynar"],
+    "Valyria": "Valyrian",
+    "The_Stormlands": "Stormlands",
+    "The_Iron_Islands": "Ironborn",
+    "The_North": ["Northmen", "Northern mountain clans"],
+    "The_Vale": ["Valemen", "Mountain clans"],
+    "The_Reach": "Reach",
+    "Dorne": "Dornish",
+    "Riverlands": "Rivermen",
+    "Westernlands": ["Westerman", "Westerlands"],
+    "The_Three_Sisters": "Sistermen",
+    "New_Ghis": "Ghiscari",
+    "Old_Ghis": "Ghiscari",
+    "The_Neck": "Crannogmen",
+    "Asshai": "Asshai",
+    "Tyrish": "Tyroshi",
+    "Myr": "Myrish",
+    "Thenn": "Thenn",
+    // "???": "Free Folk",
+    "Vaes_Dothrak": "Dothraki",
+    "Norvos": "Norvoshi",
+    "Ib_Islands": "Ibbenese",
+    "Summer_Islands": "Summer Isles",
+    "Meereen": "Meereenese",
+    "Astapor": "Astapori",
+    "Lys": "Lysene",
+    "Qarth": "Qartheen",
+    "Lhazosh": "Lhazareen",
+    "Pentos": "Pentoshi",
+    "Naath": "Naathi",
+    "Qohor": "Qohor"
+}
 
-function APICall(type, page, page_size) {
-    var xhttp = new XMLHttpRequest(),
-        type = type.toLowerCase();
-        if (type != "characters" && type != "books" && type != "houses" ) {
-            alert.info("You entered an incorrect value.");
-        }
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            var result = JSON.parse(xhttp.responseText);
-            // Add result to cultures
-            all_characters = all_characters.concat(result);
-            console.log(all_characters);
-            console.info('https://www.anapioficeandfire.com/api/' + type + '?page=' + page + '&pageSize=' + page_size);
-        }
-    };
-    xhttp.open('GET', 'https://www.anapioficeandfire.com/api/' + type + '?page=' + page + '&pageSize=' + page_size, true);
-    xhttp.send();
+var all_lands;
+var all_continents;
+var all_titles;
+var all_pins;
+
+function APICall(type, page, page_size, query) {
+    console.info("You are querying for: https://www.anapioficeandfire.com/api/" + type + "?page=" + page + "&pageSize=" + page_size + query);
+    try {
+        var xhttp = new XMLHttpRequest(),
+            type = type.toLowerCase();
+            if (type != "characters" && type != "books" && type != "houses" ) {
+                console.warn("You entered an incorrect value.");
+            }
+        xhttp.onreadystatechange = function () {
+            console.info("readyState: " + this.readyState + " | status: " + this.status)
+            if (this.readyState == 4 && this.status == 200) {
+                var result = JSON.parse(xhttp.responseText);
+                all_characters = all_characters.concat(result);
+                console.log(all_characters);
+            }
+        };
+        xhttp.open('GET', 'https://www.anapioficeandfire.com/api/' + type + '?page=' + page + '&pageSize=' + page_size + query, true);
+        xhttp.send();
+    }
+    catch (error){
+        console.warn("An error occured here!");
+    }
 }
 
 // function AddCulturesToList() {
@@ -40,10 +82,10 @@ function APICall(type, page, page_size) {
 
 
 document.addEventListener("DOMContentLoaded", function (event) {
-    var all_lands = document.querySelectorAll("[class*=land_]");
-    var all_pins = document.querySelectorAll("[class*=pin_]");
-    var all_titles = document.querySelectorAll("[class*=text_]");
-    var all_continents = document.querySelectorAll(".continent");
+    all_lands = document.querySelectorAll("[class*=land_]");
+    all_pins = document.querySelectorAll("[class*=pin_]");
+    all_titles = document.querySelectorAll("[class*=text_]");
+    all_continents = document.querySelectorAll(".continent");
 
     ResetAllClasses();
 
@@ -79,8 +121,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
             // Check if there are other elements that depend on this one (For example: The Neck depends on the North but not the other way around)
             CheckDependencies("click", elem);            
-
-            ScrollToElement(elem.id);
+            QueryAPI(elem);
+            // ScrollToElement(elem.id);
             
         });
     });
@@ -93,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         elem.addEventListener("mouseout", function() {
             elem.parentElement.classList.remove("continent__hovered");            
         });
-        elem.addEventListener("click", function () {
+        elem.addEventListener("click", function() {
             ResetAllClasses();
             // We only want our clicked element to be visible, so we hide all the rest
             if (elem.parentElement.classList.contains("continent__clicked")) {
@@ -101,7 +143,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             } else {
                 elem.parentElement.classList.add("continent__clicked");            
             }
-
+            QueryAPI(elem.parentElement);
+            
 
         });
     });
@@ -197,14 +240,14 @@ function ScrollToElement(element_query) {
     // We want to scroll into our section__left
     var papa = document.querySelector('.section__left');
     // Our top position should be the top position of the element minus it's height
-    var scroll_to_top = bounding_box.y - (papa.clientHeight / 2);
+    var scroll_to_top = bounding_box.y;
     // Our left position should be the left position of the element minus it's width
-    var scroll_to_left = bounding_box.x - (papa.clientWidth / 2)
+    var scroll_to_left = bounding_box.x;
     // Scroll the "papa" element to those positions
     papa.scrollTop = scroll_to_top;
     papa.scrollLeft = scroll_to_left;
     console.log("New position:")
-    console.log("Horizontal: " + papa.scrollTop + " | Vertical: " + papa.scrollLeft)
+    console.log("Horizontal: " + papa.scrollLeft + " | Vertical: " + papa.scrollTop)
 }
 
 function ZoomSVG(zoom_value) {
@@ -212,3 +255,27 @@ function ZoomSVG(zoom_value) {
     svg.style.height = zoom_value + "vh";
 }
 
+
+function QueryAPI(elem) {
+
+    // Our keys are made out of all the Land / Continent id's
+    var key_to_search_for = elem.id;
+    var value = cultures[key_to_search_for];
+
+    // Check if we have encountered an Array or not...
+    if (value instanceof Array) {
+        
+        // Do something with each object then
+
+        // 1) Make an empty string
+        var query_parameter = "";
+        
+        value.forEach(function (object) {
+            APICall("characters", 0, 10, "&Cultures=Northmen");
+        });
+
+    } else {
+        APICall("characters", 0, 10, "&Cultures=" + value);
+    }
+
+}
