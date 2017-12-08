@@ -62,10 +62,25 @@ text {
     background-color: rgba(lighten($white, 5), 0.7);
 
     box-sizing: border-box;
-    & .svg__tools__line {
+    .fa {
+        color: rgba(lighten($black, 5), 0.9);
+        cursor: pointer;
+        &:hover {
+        color: rgba($black, 1);
+
+        }        
+    }
+    .svg__tools__line {
         display: block;
         & .svg__tools__checkbox {
             margin-right: 10px;
+        }
+    }
+
+    &.closed {
+        padding: 5;
+        .svg__tools__line{
+            display: none;
         }
     }
 }

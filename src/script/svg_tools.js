@@ -35,6 +35,7 @@ toggle_pins_checkbox.addEventListener("change", function () {
 
 
 //#region "Zoom SVG box"
+
 // Get slider
 var zoom_slider = document.querySelector("#zoom_svg_slider");
 zoom_slider.addEventListener("change", function () {
@@ -47,5 +48,17 @@ function ZoomSVG(zoom_value) {
     // Update the height of the SVG element
     svg.style.height = zoom_value + "vh";
 }
+
+//#endregion
+
+//#region "Resize SVG Tools"
+
+var resizer = document.querySelector("#svg__tools__resize");
+var svg__tools_box = document.querySelector(".svg__tools");
+resizer.addEventListener("click", function() {
+    ToggleClass(svg__tools_box, "opened", "closed");
+    ToggleClass(resizer, "fa-window-minimize", "fa-window-maximize");
+    
+});
 
 //#endregion

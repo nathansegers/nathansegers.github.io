@@ -1,18 +1,19 @@
 .card__wrapper {
     display: flex;
     width: 100%;
-    height: 100%;
-    flex-flow: row;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
-    align-content: center;
-    align-self: center;
-    align-items: center;
+    align-content: space-around;
+    align-self: flex-start;
+    align-items: stretch;
+    padding: 10px 0;
 }
 
 .card {
     width: 30%;
-    height: 150px;
+    min-height: 150px;
+    height: auto;
     background-color: $color-yellow;
     padding: 5px 10px;
     margin-bottom: 15px;
@@ -45,7 +46,7 @@
         .card__section__line {
             display: block;
             clear: right;
-            padding: 5px 0;
+            padding: 10px 0;
 
             &.card__section__line__divided {
                 // When the card__section__line has multiple elements, we have to reset the font-size to 0 because the elements have display: inline-block
@@ -77,8 +78,30 @@
 
             .pull-right {
                 font-weight: bold;
+                text-align: right;
             }
         }
     }
+    &.invisible {
+        visibility: hidden;
+    }
+}
 
+#load_more {
+    .card__section {
+        text-align: center;
+        vertical-align: middle;
+        box-sizing: border-box;
+        h1{
+            vertical-align: middle;
+            text-transform: uppercase;
+            font-weight: bolder;
+            padding: 10px 15px;
+            font-size: 1.25em;
+            // border: 1px solid $black;
+        }
+    }
+    &.hidden {
+        display: none;
+    }
 }

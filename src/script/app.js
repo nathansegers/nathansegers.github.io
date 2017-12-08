@@ -1,7 +1,9 @@
 'use strict';
 console.info("Hello there!")
-
 document.addEventListener("DOMContentLoaded", function (event) {
+
+
+
 
 //#region "SETUP"
     // We load all the elements into our variables
@@ -9,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     all_pins = document.querySelectorAll("[class*=pin_]");
     all_titles = document.querySelectorAll("[class*=text_]");
     all_continents = document.querySelectorAll(".continent");
+    all_continent_parents = document.querySelectorAll(".continent_wrapper");
 
     // Clean start!!
     ResetAllClasses();
@@ -19,11 +22,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
     all_lands.forEach(function (elem) {
         // Do a function on mouse over
         elem.addEventListener("mouseover", function () {
-            elem.classList.add("land__hovered");
+            AddClass(elem, "land__hovered");
             CheckDependencies("mouseover", elem);
         });
         elem.addEventListener("mouseout", function() {
-            elem.classList.remove("land__hovered"); 
+            RemoveClass(elem, "land__hovered");            
             CheckDependencies("mouseout", elem);
         })
         elem.addEventListener("click", function() {
@@ -39,26 +42,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
     // For each continent title
     all_continents.forEach(function (elem) {
         elem.addEventListener("mouseover", function() {
-            elem.parentElement.classList.add("continent__hovered");
+            AddClass(elem.parentElement, "continent__hovered");            
         });
         elem.addEventListener("mouseout", function() {
-            elem.parentElement.classList.remove("continent__hovered");            
+            RemoveClass(elem.parentElement, "continent__hovered");            
         });
         elem.addEventListener("click", function() {
             ResetAllClasses();
             ToggleClass(elem.parentElement, "continent__clicked");
-            QueryAPI(elem.parentElement);
+            QueryRegion(elem.parentElement);
         });
     });
 //#endregion
 
 
-//#region "Scrollbar"
-
-    //                      ---- Measure the Scrollbar ----
-    MeasureScrollBar();
-
-//#endregion
+MeasureScrollBar();
 
 });
 
@@ -78,55 +76,74 @@ function MeasureScrollBar() {
     svg__tools__box.style.bottom = 30 + scrollbarWidth + "px";
 }
 
-function ToggleClass(elem, class_name) {
-    if (elem.classList.contains(class_name)) {
-        elem.classList.remove(class_name);
+function ToggleClass(element, class_1, class_2) {
+    class_2 = typeof class_2 === "undefined" ? "" : class_2;
+    // Check if element contains the class to remove
+    if (element.classList.contains(class_1)) {
+        RemoveClass(element, class_1);
+        if (class_2 != "") {
+            AddClass(element, class_2);
+        }
     }
+    // If it does not contain it yet, add it
     else {
-        elem.classList.add(class_name);
+        AddClass(element, class_1);
+        if (class_2 != "") {
+           RemoveClass(element, class_2);
+        }
     }
+}
+
+function RemoveClass(element, class_to_remove) {
+    element.classList.remove(class_to_remove);
+}
+function AddClass(element, class_to_add) {
+    element.classList.add(class_to_add);
 }
 
 // Function to set remove all the classes to the default
 function ResetAllClasses() {
-    all_lands.forEach(function (elem) {
-        elem.classList.remove("land__clicked");
+    RemoveClassOnMultipleElements(all_lands, "land__clicked");
+    RemoveClassOnMultipleElements(all_continent_parents, "continent__clicked");
+}
+
+function ToggleClassOnMultipleElements(element_array, class_name) {
+    element_array.forEach(function (object) {
+        ToggleClass(object, class_name);
     });
-    all_continents.forEach(function (elem) {
-        elem.parentElement.classList.remove("continent__clicked");
+}
+
+function RemoveClassOnMultipleElements(element_array, class_name) {
+    element_array.forEach(function (object) {
+        RemoveClass(object, class_name);
+    });
+}
+
+function AddClassOnMultipleElements(element_array, class_name) {
+    element_array.forEach(function (object) {
+        AddClass(object, class_name);
     });
 }
 
 function CheckDependencies(type, elem) {
-    var class_to_add = "";
-    var remove = false;
+    // An element that's a child of someone, gets a special class ".part_of_PARENT_ID"
+    var class_name = ".part_of_" + elem.id;
+    // Get all those elements
+    var all_dependent_lands = document.querySelectorAll(class_name);
+
     switch (type) {
         case "mouseover":
-            class_to_add = "land__hovered";
+            AddClassOnMultipleElements(all_dependent_lands, "land__hovered")
             break;
         case "mouseout":
-            class_to_add = "land__hovered";
-            remove = true;
+            RemoveClassOnMultipleElements(all_dependent_lands, "land__hovered")
             break;
         case "click":
-            class_to_add = "land__clicked";
+            ToggleClassOnMultipleElements(all_dependent_lands, "land__clicked")
             break;
         default:
             break;
     }
-    // An element that's a child of someone, gets a special class ".part_of_PARENT_ID"
-    var class_name = ".part_of_" + elem.id;
-    // Get all those elements
-    var all_dependend_lands = document.querySelectorAll(class_name);
-    
-    // Set the correct class
-    all_dependend_lands.forEach(function (object) {
-        if (remove == true) {
-            object.classList.remove(class_to_add);
-        } else {
-            object.classList.add(class_to_add);
-        }
-    });
 }
 
 

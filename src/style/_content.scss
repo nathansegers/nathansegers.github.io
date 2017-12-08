@@ -16,7 +16,7 @@ section.section {
         max-height: 100%;
         
         max-width: 30%;
-
+        width: 30%;
         background-color: $color-light-blue;
         
         overflow: auto;
@@ -26,8 +26,10 @@ section.section {
 
         height: 100%;
         max-width: 70%;
-        
+        width: 70%;
         padding: 10px;
+
+        overflow-y: auto;        
         
         // background-color: $color-green;
     }

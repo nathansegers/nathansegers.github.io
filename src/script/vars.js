@@ -8,6 +8,7 @@ var all_characters = Array();
 var cultures = {
     "Braavos": "Braavosi",
     "Westeros": ["Westeros", "Andal", "First Men", "Rhoynar"],
+    "King_s_Landing": "Westeros",
     "Valyria": "Valyrian",
     "The_Stormlands": "Stormlands",
     "The_Iron_Islands": "Ironborn",
