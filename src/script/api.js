@@ -148,20 +148,21 @@ function UpdateCardsWithCharacters(min, max) {
     // Setup the next page card
     if ((all_characters.length > 9) && (document.body.contains(load_more_card) === false)) {
         
-        article = document.createElement("article");
-        article.classList.add("card");
-        article.id = "load_more";
+        AddObjectsToElement(card__wrapper, "article.card.load_more_characters > section.card__section > h1{Load next page of characters}");
+        // article = document.createElement("article");
+        // article.classList.add("card");
+        // article.id = "load_more";
 
-        section = document.createElement("section");
-        section.classList.add("card__section");
-        load_more__title = document.createElement("h1");
-        load_more__title.appendChild(document.createTextNode("Load next page of characters"))
-        section.appendChild(load_more__title);
+        // section = document.createElement("section");
+        // section.classList.add("card__section");
+        // load_more__title = document.createElement("h1");
+        // load_more__title.appendChild(document.createTextNode("Load next page of characters"))
+        // section.appendChild(load_more__title);
 
-        article.appendChild(section);
-        card__wrapper.appendChild(article);
+        // article.appendChild(section);
+        // card__wrapper.appendChild(article);
 
-        document.querySelector('#load_more').addEventListener("click", function () {
+        document.querySelector('.load_more_characters').addEventListener("click", function () {
             if (page_size == 8) {
                 UpdateCardsWithCharacters(min_value + page_size, max_value + page_size + 1);                
             } else {
@@ -177,7 +178,7 @@ function UpdateCardsWithCharacters(min, max) {
 }
 
 function DOMText(text) {
-    return docment.createTextNode(text);
+    return document.createTextNode(text);
 }
 
 function BuildArticle(object) {
