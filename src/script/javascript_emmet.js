@@ -8,12 +8,19 @@ function CreateHTMLObject(object_reference) {
     // If object needs classes
     if (object_reference.includes('.')) {
         // Seperate the classes from the object
-        var splitted = object_reference.replace(" ", "").split(".");
+        var splitted = object_reference.split(".");
         parent = document.createElement(splitted[0]);
         for (var index = 1; index < splitted.length; index++) {
             var element = splitted[index];
-            CheckForText(element);
-            parent.classList.add(element.replace(" ", ""));
+            if (element.includes('{')) {
+                StartPos = element.search('{');
+                StopPos = element.search('}');
+                text = document.createTextNode(element.substring(StartPos + 1, StopPos));                
+                parent.classList.add(element.substring(0, StartPos));
+                parent.appendChild(text);
+            } else {
+                parent.classList.add(element.replace(" ", ""));                
+            }
         }
     } else {
         // Doesn't contain class, but may contain text
@@ -43,15 +50,22 @@ function CreateHTMLObject(object_reference) {
 
     return parent;
 }
-
 function AddObjectsToElement(object_to_add_to, object_reference) {
     var parent = object_to_add_to;
-    var references = object_reference.split(' > ');
-    for (var index = 0; index < references.length; index++) {
-        var element = CreateHTMLObject(references[index]);
-        parent.appendChild(element);
-        // Element is parent for the next one
-        parent = element;
+    if (object_reference.includes(' + ')) {
+        var siblings = object_reference.split(' + ');
+        for (var i = 0; i < siblings.length; i++) {
+            //        alert(siblings[i]);
+            AddObjectsToElement(parent, siblings[i]);
+        }
+    } else {
+        var references = object_reference.split(' > ');
+        for (var index = 0; index < references.length; index++) {
+            var element = CreateHTMLObject(references[index]);
+            parent.appendChild(element);
+            // Element is parent for the next one
+            parent = element;
+        }
     }
 }
 

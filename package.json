@@ -2,7 +2,7 @@
   "name": "CreateIII-Project",
   "version": "1.0.0",
   "main": "null",
-  "author": "NMCT",
+  "author": "Nathan Segers NMCT",
   "license": "MIT",
   "private": true,
   "dependencies": {
@@ -17,5 +17,6 @@
   },
   "devDependencies": {
     "gulp-webp": "^2.3.0"
-  }
+  },
+  "repository": "https://github.com/nathansegers/nathansegers.github.io.git"
 }

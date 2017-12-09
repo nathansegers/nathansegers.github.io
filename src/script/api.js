@@ -64,35 +64,40 @@ function QueryRegion(elem) {
     var key_to_search_for = elem.id;
     var value = cultures[key_to_search_for];
 
-    $QUERY_TYPE = "characters";
-    $QUERY_SIZE = 50;
-    $QUERY_FILTER = "&Culture=";
-    // Check if we have encountered an Array or not...
-    if (value instanceof Array) {
-        // Dealing with an array here ...
+    if (value == undefined) {
+        AddObjectsToElement(card__wrapper, "section.card__section > h1{Sorry, we cannot show you characters for this region, as there are none in the API}");        
+    } else {
 
-        // We would like to keep track of how many times we have to process the API.
-        // In other words: How many items are there inside our array?
-        times_to_call_api = value.length;        
+        $QUERY_TYPE = "characters";
+        $QUERY_SIZE = 50;
+        $QUERY_FILTER = "&Culture=";
+        // Check if we have encountered an Array or not...
+        if (value instanceof Array) {
+            // Dealing with an array here ...
 
-        // Do something with each object then
-        for (var index = value.length - 1; index >= 0; index--) {
-            var element = value[index];
-            // console.info(element);
+            // We would like to keep track of how many times we have to process the API.
+            // In other words: How many items are there inside our array?
+            times_to_call_api = value.length;        
+
+            // Do something with each object then
+            for (var index = value.length - 1; index >= 0; index--) {
+                var element = value[index];
+                // console.info(element);
+                $QUERY_PAGE = 1;
+                $QUERY_PARAMETER = element;
+                APICall($QUERY_TYPE, $QUERY_PAGE, $QUERY_SIZE, $QUERY_FILTER, $QUERY_PARAMETER);
+            }
+
+        } else {
+            // console.info(value);
+            // Since we can only proceed when 'times_to_call_api' is set to 0, we will act set it to 1 first.
+            times_to_call_api = 1;        
             $QUERY_PAGE = 1;
-            $QUERY_PARAMETER = element;
+            $QUERY_PARAMETER = value;
             APICall($QUERY_TYPE, $QUERY_PAGE, $QUERY_SIZE, $QUERY_FILTER, $QUERY_PARAMETER);
         }
 
-    } else {
-        // console.info(value);
-        // Since we can only proceed when 'times_to_call_api' is set to 0, we will act set it to 1 first.
-        times_to_call_api = 1;        
-        $QUERY_PAGE = 1;
-        $QUERY_PARAMETER = value;
-        APICall($QUERY_TYPE, $QUERY_PAGE, $QUERY_SIZE, $QUERY_FILTER, $QUERY_PARAMETER);
     }
-
 }
 
 
@@ -120,6 +125,7 @@ function ProcessAPIResult(result, query_page, query_parameter) {
     if (times_to_call_api == 0) {
         console.info("\r\n\r\n ----- We have finished our calls, NOW PROCEED!!! ----- \r\n\r\n");
         // Now that we got everything, we can do something with it
+        // Remove all the items
         UpdateCardsWithCharacters(0, 8);
     }
 
@@ -129,7 +135,7 @@ function ProcessAPIResult(result, query_page, query_parameter) {
 var min_value = 0;
 var max_value = 0;
 function UpdateCardsWithCharacters(min, max) {
-    var load_more_card = document.querySelector('#load_more');
+    var load_more_card = document.querySelector('.load_more_characters');
     if (document.body.contains(load_more_card) === true) {
         if (max_value > all_characters.length) {
             AddClass(load_more_card, "hidden");
@@ -147,21 +153,7 @@ function UpdateCardsWithCharacters(min, max) {
     
     // Setup the next page card
     if ((all_characters.length > 9) && (document.body.contains(load_more_card) === false)) {
-        
         AddObjectsToElement(card__wrapper, "article.card.load_more_characters > section.card__section > h1{Load next page of characters}");
-        // article = document.createElement("article");
-        // article.classList.add("card");
-        // article.id = "load_more";
-
-        // section = document.createElement("section");
-        // section.classList.add("card__section");
-        // load_more__title = document.createElement("h1");
-        // load_more__title.appendChild(document.createTextNode("Load next page of characters"))
-        // section.appendChild(load_more__title);
-
-        // article.appendChild(section);
-        // card__wrapper.appendChild(article);
-
         document.querySelector('.load_more_characters').addEventListener("click", function () {
             if (page_size == 8) {
                 UpdateCardsWithCharacters(min_value + page_size, max_value + page_size + 1);                
@@ -171,6 +163,7 @@ function UpdateCardsWithCharacters(min, max) {
         });
     }
 
+    // Build an article for every item
     array_to_show.forEach(function (object){
         BuildArticle(object);
     });
@@ -181,10 +174,13 @@ function DOMText(text) {
     return document.createTextNode(text);
 }
 
+var i = 0;
+
 function BuildArticle(object) {
-    var $NAME = DOMText(object.name);
+    i++;
+    var $NAME = object.name;
     var $GENDER = object.gender;
-    var $CULTURE = DOMText(object.culture);
+    var $CULTURE = object.culture;
     var has_actor = false;
 
     if (object.born === "") {
@@ -193,12 +189,12 @@ function BuildArticle(object) {
     if (object.died === "") {
         object.died = "Unknown";
     }
-    var $ACTOR = DOMText(object.playedBy[object.playedBy.length - 1]);
+    var $ACTOR = object.playedBy[object.playedBy.length - 1];
     if (object.playedBy[object.playedBy.length - 1] != "") {
         has_actor = true;
     }
-    var $BORN = DOMText(object.born);
-    var $DIED = DOMText(object.died);
+    var $BORN = object.born;
+    var $DIED = object.died;
 
     var $GENDER_ICON;
 
@@ -212,93 +208,34 @@ function BuildArticle(object) {
         default:
             break;
     }
-    // Create article
-    article = document.createElement("article");
-    article.classList.add("card");
+    
+    AddObjectsToElement(card__wrapper, "article.card.card-" + i);
+    var newly_created_card = document.querySelector(".card-" + i);
+    AddObjectsToElement(newly_created_card, "header.card__header + section.card__section");    
+    var newly_created_card_header = document.querySelector(".card-" + i + " header.card__header");     
+    var newly_created_card_section = document.querySelector(".card-" + i + " section.card__section"); 
 
-    header = document.createElement("header");
-    header.classList.add("card__header");
-    header__span = document.createElement("span");
-    header__span.classList.add("card__name");
-    header__span__title = document.createElement("h1");
-    header__span__title.appendChild($NAME);
-    header__span.appendChild(header__span__title);
-    header.appendChild(header__span);
-    header__gender__icon = document.createElement("i");
-    header__gender__icon.classList.add("fa");
-    header__gender__icon.classList.add($GENDER_ICON);
-    header__gender__icon.classList.add("fa-pull-right");
-    header.appendChild(header__gender__icon);
+    AddObjectsToElement(newly_created_card_header, "span.card__name > h1{" + $NAME + "} + i.fa.fa-pull-right." + $GENDER_ICON)
 
-    article.appendChild(header);
-
-    section = document.createElement("section");
-    section.classList.add("card__section");
-    // First line
-    section__line = document.createElement("span");
-    section__line.classList.add("card__section__line");
-    section__line_left = document.createElement("span");
-    section__line_left.classList.add("pull-left");
-    section__line_left.appendChild(DOMText("Culture:"));
-    section__line.appendChild(section__line_left);
-
-    section__line_right = document.createElement("span");
-    section__line_right.classList.add("pull-right");
-    section__line_right.appendChild($CULTURE);
-    section__line.appendChild(section__line_right);
-
-    section.appendChild(section__line);
-
-    // Second Line
-    section__line = document.createElement("span");
-    section__line.classList.add("card__section__line");
-    section__line_left = document.createElement("span");
-    section__line_left.classList.add("pull-left");
-    section__line_left.appendChild(DOMText("Born:"));
-    section__line.appendChild(section__line_left);
-
-    section__line_right = document.createElement("span");
-    section__line_right.classList.add("pull-right");
-    section__line_right.appendChild($BORN);
-    section__line.appendChild(section__line_right);
-
-    section.appendChild(section__line);
-
-    // Third Line
-    section__line = document.createElement("span");
-    section__line.classList.add("card__section__line");
-    section__line_left = document.createElement("span");
-    section__line_left.classList.add("pull-left");
-    section__line_left.appendChild(DOMText("Died:"));
-    section__line.appendChild(section__line_left);
-
-    section__line_right = document.createElement("span");
-    section__line_right.classList.add("pull-right");
-    section__line_right.appendChild($DIED);
-    section__line.appendChild(section__line_right);
-
-    section.appendChild(section__line);
-
-    // Fourth Line
-    if (has_actor === true) {
-        section__line = document.createElement("span");
-        section__line.classList.add("card__section__line");
-        section__line_left = document.createElement("span");
-        section__line_left.classList.add("pull-left");
-        section__line_left.appendChild(DOMText("Played by:"));
-        section__line.appendChild(section__line_left);
-
-        section__line_right = document.createElement("span");
-        section__line_right.classList.add("pull-right");
-        section__line_right.appendChild($ACTOR);
-        section__line.appendChild(section__line_right);
-
-        section.appendChild(section__line);
+    var values = [
+        ["Culture:", $CULTURE],
+        ["Born:", $BORN],
+        ["Died:", $DIED],
+    ]
+    if  (has_actor === true) {
+        var actor_line = ["Played By:", $ACTOR];
+        values.push(actor_line);
+    }
+    for (var index = 0; index < values.length; index++) {
+        var element = values[index];
+        AddObjectsToElement(newly_created_card_section, "span.card__section__line");
+        AddObjectsToElement(GetSectionLine(index), "span.pull-left{"+ element[0] +"} + span.pull-right{" + element[1] + "}");
     }
 
-
-    article.appendChild(section);
-
-    // Append the whole card to our article
-    card__wrapper.insertBefore(article, document.querySelector("#load_more")); 
+    function GetSectionLine(number) {
+        var newly_created_card_section_line = document.querySelectorAll(".card-" + i + " span.card__section__line");
+        var last_line = newly_created_card_section_line[number];
+        return last_line;
+    }
+   
 }

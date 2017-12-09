@@ -41,7 +41,7 @@
 
     }
     .card__section {
-        padding: 10px 5px;
+        padding: 10px 5px 15px 5px;
 
         .card__section__line {
             display: block;
@@ -87,7 +87,8 @@
     }
 }
 
-#load_more {
+.load_more_characters {
+    order: 1000;
     .card__section {
         text-align: center;
         vertical-align: middle;
