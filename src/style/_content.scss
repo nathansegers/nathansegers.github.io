@@ -14,11 +14,12 @@ section.section {
         
         height: 100%;
         max-height: 100%;
-        
         max-width: 30%;
         width: 30%;
-        background-color: $color-light-blue;
         
+        background-color: $color-light-blue;
+        border-right: 2px solid $color-red;
+
         overflow: auto;
     }
     & .section__right {
@@ -32,5 +33,28 @@ section.section {
         overflow-y: auto;        
         
         // background-color: $color-green;
+    }
+}
+
+@media screen and (max-width: 1068px) {
+    section.section {
+        flex-flow: column;
+        & .section__left {
+            height: 35%;
+            max-height: 35%;
+            width: 100%;
+            max-width: 100%;
+            border-bottom: 2px solid $color-red;
+        }
+        & .section__right {
+            height: 65%;
+            max-height: 65%;
+            width: 100%;
+            max-width: 100%;
+            padding: 10px 0px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            
+        }
     }
 }

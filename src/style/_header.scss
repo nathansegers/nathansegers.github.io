@@ -47,20 +47,80 @@ header.header {
             font-size: 1rem;
             font-family: "Open sans";
             font-weight: bolder;
-            color: $black;
+            color: lighten($white, 5);
             
             background-color: $color-regal_red__light;
             border: none;
 
             box-sizing: border-box;
+            outline: 0;
+            &:focus + .header__search_bar__result:not(.closed) {
+                display: block;
+            }
+        }
+        & .header__search_bar__result {
+            display: none;
+            position: relative;
+            margin-top: 15px;
+            padding: 5px 20px;
+            line-height: 1.75em;
+            height: auto;
+            width: 100%;
+            color: lighten($white, 5);
+            text-align: left;
+            background-color: rgba($color-regal_red__lighter, 0.9);
+            border-radius: 5px;
+            text-align: left;
+            font-size: 1rem;
+            box-sizing: border-box;
+            & .search_option {
+                display: block;
+            }
+        }
+        & .header__search_bar__result:before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            border-left: 10px solid transparent;
+            border-top: 10px solid rgba($color-regal_red__lighter, 0.9);
+            border-bottom: 10px solid transparent;
+            border-right: 10px solid rgba($color-regal_red__lighter, 0.9);
+            transform: rotate(-45deg);
         }
         & .fa {
             padding: 15px 10px;
             font-size: 1rem;
-            color: $black;
+            color: lighten($white, 5);
         }
     }
 }
-:-ms-input-placeholder, ::-ms-input-placeholder, ::-webkit-input-placeholder {
-    color: $color-green;
+input::placeholder {
+    color: lighten($white, 5);
+    opacity: 1;
+    text-shadow: none;
+}
+input::-ms-input-placeholder {
+    color: lighten($white, 5);
+    opacity: 1;
+    text-shadow: none;
+}
+input::-moz-placeholder {
+    color: lighten($white, 5);
+    opacity: 1;
+    text-shadow: none;
+}
+@media screen and (max-width: 1068px) {
+
+}
+
+@media screen and (max-width: 768px) {
+    
+}
+
+@media screen and (max-width: 568px) {
+    header.header .header__title {
+        font-size: 1.25rem;
+    }
 }
