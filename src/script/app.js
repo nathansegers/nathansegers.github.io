@@ -39,6 +39,23 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     });
 
+    all_pins.forEach(function (elem) {
+        // Do a function on mouse over
+        elem.addEventListener("mouseover", function () {
+            AddClass(elem, "pins__hovered");
+        });
+        elem.addEventListener("mouseout", function () {
+            RemoveClass(elem, "pins__hovered");
+        })
+        elem.addEventListener("click", function () {
+            ResetAllClasses();
+            ToggleClass(elem, "pins__clicked");
+            // Check if there are other elements that depend on this one (For example: The Neck depends on the North but not the other way around)
+            QueryRegion(elem);
+
+        });
+    });
+
     // For each continent title
     all_continents.forEach(function (elem) {
         elem.addEventListener("mouseover", function() {

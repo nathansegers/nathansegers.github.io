@@ -126,6 +126,9 @@ function ProcessAPIResult(result, query_page, query_parameter) {
         console.info("\r\n\r\n ----- We have finished our calls, NOW PROCEED!!! ----- \r\n\r\n");
         // Now that we got everything, we can do something with it
         // Remove all the items
+        while (card__wrapper.firstChild) {
+            card__wrapper.removeChild(card__wrapper.firstChild);
+        }
         UpdateCardsWithCharacters(0, 8);
     }
 
@@ -178,7 +181,13 @@ var i = 0;
 
 function BuildArticle(object) {
     i++;
-    var $NAME = object.name;
+    if (object.name == "" && object.aliases[object.aliases.length - 1] != "") {
+        var $NAME = "(" + object.aliases[object.aliases.length -1] + ")";
+    } else if (object.name != "") {
+        var $NAME = object.name.replace(".", ""); // Since we cannot have dots in our name, and some characters do contain them for a reason, we remove them
+    } else {
+        var $NAME = "Unknown";
+    }
     var $GENDER = object.gender;
     var $CULTURE = object.culture;
     var has_actor = false;

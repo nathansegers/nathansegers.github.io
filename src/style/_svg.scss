@@ -27,6 +27,9 @@ text {
 .pin_shown {
     visibility: visible;
 }
+[class*="pin_"] > text {
+    fill: $black;
+}
 
 .continent__hovered,
 .continent__clicked,
@@ -38,15 +41,46 @@ text {
         fill: $color-green;
         stroke: $color-green;
     }
-    text {
+
+    & text {
         visibility: visible;
         fill: $white;
-        &.island {
+        &.island{
             fill: $black;
         }
     }
+    & [class*="pin_"] {
+        & > text:not(.island){
+            fill: $white;
+        }
+        &:not(.pin_shown) > text {
+            visibility: hidden;
+        }
+    }
+    &[class*="pin_"]:not(.pin_shown) > text {
+        visibility: hidden;
+    }
+    &.pins__hovered > text,
+    &.pins__clicked > text {
+        fill: $white;
+    }
 }
-
+.pins__hovered,
+.pins__clicked {
+    visibility: visible;
+    text {
+        fill: $black;
+    }
+    &:not(.land__hovered) > text {
+        fill: $black;
+    }
+}
+.pins__hovered:not(.land__clicked):hover>text,
+.pins__clicked:not(.land__clicked):hover>text,
+.pins__hovered:not(.continent__clicked):hover>text,
+.pins__clicked:not(.cotinent__clicked):hover>text{
+    fill: $black;
+}
 
 .svg__tools {
     position: absolute;
