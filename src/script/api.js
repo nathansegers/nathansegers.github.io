@@ -50,7 +50,8 @@ function APICall(type, page, page_size, query_filter, query_parameter) {
    
 }
 
-function QueryRegion(elem) {
+function QueryRegion(elem, culture) {
+    culture = typeof culture === "undefined" ? "" : culture;
 
     // Clear all the characters from the current list
     all_characters.length = 0;
@@ -59,8 +60,12 @@ function QueryRegion(elem) {
     ClearElementsChildren(card__wrapper);
 
     // Our keys are made out of all the Land / Continent id's
-    var key_to_search_for = elem.id;
-    var value = cultures[key_to_search_for];
+    if (culture === "") {
+        var key_to_search_for = elem.id;
+        var value = cultures[key_to_search_for];
+    } else {
+        var value = elem;
+    }
 
     if (value == undefined) {
         AddObjectsToElement(card__wrapper, "section.card__section > h1{Sorry, we cannot show you characters for this region, as there are none in the API}");        
@@ -184,15 +189,21 @@ var i = 0;
 
 function BuildArticle(object) {
     i++;
+    // If the character doesn't have a name, at least try to return an alias if it's possible...
     if (object.name == "" && object.aliases[object.aliases.length - 1] != "") {
         var $NAME = "(" + object.aliases[object.aliases.length -1] + ")";
     } else if (object.name != "") {
-        var $NAME = object.name.replace(".", ""); // Since we cannot have dots in our name, and some characters do contain them for a reason, we remove them
+        var $NAME = object.name.replace(".", ""); // Since we cannot have dots in our texts, and some characters do contain them for a reason, we remove them
     } else {
-        var $NAME = "Unknown";
+        var $NAME = "Unknown character";
     }
-    var $GENDER = object.gender;
-    var $CULTURE = object.culture;
+    var $GENDER = object.gender; 
+    if (object.culture === "" ) {
+        var $CULTURE = "Unknown";        
+    } else {
+        var $CULTURE = object.culture;
+    }
+    // If this is set to true, the charactor's actor will be displayed. Eventually, we could link this to another API to get actor/actress images.
     var has_actor = false;
 
     if (object.born === "") {
@@ -205,8 +216,8 @@ function BuildArticle(object) {
     if (object.playedBy[object.playedBy.length - 1] != "") {
         has_actor = true;
     }
-    var $BORN = object.born;
-    var $DIED = object.died;
+    var $BORN = object.born.split(".").join(" ").trim(); // Since we cannot have dots in our texts, and some characters do contain them for a reason, we remove them
+    var $DIED = object.died.split(".").join(" ").trim(); // Since we cannot have dots in our texts, and some characters do contain them for a reason, we remove them
 
     var $GENDER_ICON;
 

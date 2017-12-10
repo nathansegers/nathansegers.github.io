@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             // Check if there are other elements that depend on this one (For example: The Neck depends on the North but not the other way around)
             CheckDependencies("click", elem);
             QueryRegion(elem);
+            SetSearchbarValue("Region: ", elem.id);
             
         });
         regions.push(elem.id.split("_").join(" "));
@@ -50,6 +51,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             ToggleClass(elem, "pins__clicked");
             // Check if there are other elements that depend on this one (For example: The Neck depends on the North but not the other way around)
             QueryRegion(elem);
+            SetSearchbarValue("City: ", elem.id);
+            
         });
         cities.push(elem.id.split("_").join(" "));
     });
@@ -67,8 +70,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
             ResetAllClasses();
             ToggleClass(elem.parentElement, "continent__clicked");
             QueryRegion(elem.parentElement);
+            SetSearchbarValue("Region: ", elem.parentElement.id);
+            
         });
-        regions.push(elem.id.split("_").join(" "));
+        regions.push(elem.parentElement.id.split("_").join(" "));
     });
 //#endregion
 

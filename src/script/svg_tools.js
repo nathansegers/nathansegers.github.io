@@ -11,17 +11,17 @@ toggle_pins_checkbox.addEventListener("change", function () {
     
     // Step 3: Check all pins
     all_pins.forEach(function (object) {
-        object.classList.remove("pins__clicked");        
+        RemoveClass(object, "pins__clicked");
         if (object.classList.contains("pin_shown")) {
             // Step 3a: Set all pins to hidden if they were shown
-            object.classList.remove("pin_shown");
+            RemoveClass(object, "pin_shown");
 
             // Change some texts
             more_information_label.innerHTML = "Click on a region to get more information."
             toggle_pins_label.innerHTML = "Show cities";
         } else {
             // Step 3b: Set all pins to shown if they were hidden
-            object.classList.add("pin_shown");
+            AddClass(object, "pin_shown");
             // Change some texts
             more_information_label.innerHTML = "Click on a region/city to get more information."
             toggle_pins_label.innerHTML = "Hide cities";
@@ -30,6 +30,11 @@ toggle_pins_checkbox.addEventListener("change", function () {
     });
 });
 
+function HideAllCities() {
+    all_pins.forEach(function (object) {
+        RemoveClass(object, "pins__clicked");
+    })
+}
 
 
 //#endregion

@@ -55,9 +55,9 @@ header.header {
 
             box-sizing: border-box;
             outline: 0;
-            &:focus + .header__search_bar__result:not(.closed) {
-                display: block;
-            }
+            // &:focus + .header__search_bar__result:not(.closed) {
+            //     display: block;
+            // }
         }
         & .header__search_bar__result {
             display: none;
@@ -75,6 +75,9 @@ header.header {
             text-align: left;
             font-size: 1rem;
             box-sizing: border-box;
+            &.opened {
+                display: block;
+            }
             & strong {
                 font-weight: bolder;
             }
