@@ -11,6 +11,7 @@ toggle_pins_checkbox.addEventListener("change", function () {
     
     // Step 3: Check all pins
     all_pins.forEach(function (object) {
+        object.classList.remove("pins__clicked");        
         if (object.classList.contains("pin_shown")) {
             // Step 3a: Set all pins to hidden if they were shown
             object.classList.remove("pin_shown");

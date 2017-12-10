@@ -8,6 +8,9 @@
     align-self: flex-start;
     align-items: stretch;
     padding: 10px 0;
+    & > .card__section {
+        padding: 0px 15px;
+    }
 }
 
 .card {
