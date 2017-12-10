@@ -8,7 +8,7 @@ var all_characters = Array();
 var cultures = {
     "Braavos": "Braavosi",
     "Westeros": ["Westeros", "Andal", "First Men", "Rhoynar"],
-    "King_s_Landing": "Westeros",
+    "Kings_Landing": "Westeros",
     "Valyria": "Valyrian",
     "The_Stormlands": "Stormlands",
     "The_Iron_Islands": "Ironborn",
@@ -26,7 +26,7 @@ var cultures = {
     "Tyrish": "Tyroshi",
     "Myr": "Myrish",
     "Thenn": "Thenn",
-    // "???": "Free Folk",
+    "The_Land_of_Always_Winter": "Free Folk",
     "Vaes_Dothrak": "Dothraki",
     "Norvos": "Norvoshi",
     "Ib_Islands": "Ibbenese",
@@ -45,3 +45,24 @@ var all_lands;
 var all_continents;
 var all_titles;
 var all_pins;
+
+
+var cities = []; // Take all the cities for our searchbar
+var regions = []; // Take all the regions for our searchbar
+var unique_cultures = []; // Take all the cultures for our searchbar
+
+Object.keys(cultures).forEach(function (element) {
+    var unique_culture = cultures[element];
+    if (unique_culture instanceof Array) {
+        for (var index = 0; index < unique_culture.length; index++) {
+            var value = unique_culture[index];
+            if (unique_cultures.includes(value) == false) {
+                unique_cultures.push(value);
+            }
+        }
+    } else {
+        if (unique_cultures.includes(unique_culture) == false) {
+            unique_cultures.push(unique_culture);
+        }
+    }
+});

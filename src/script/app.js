@@ -2,9 +2,6 @@
 console.info("Hello there!")
 document.addEventListener("DOMContentLoaded", function (event) {
 
-
-
-
 //#region "SETUP"
     // We load all the elements into our variables
     all_lands = document.querySelectorAll("[class*=land_]");
@@ -15,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     // Clean start!!
     ResetAllClasses();
+
 //#endregion
 //#region "Events for LANDS & CONTINENTS"
 
@@ -37,8 +35,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             QueryRegion(elem);
             
         });
+        regions.push(elem.id.split("_").join(" "));
     });
-
     all_pins.forEach(function (elem) {
         // Do a function on mouse over
         elem.addEventListener("mouseover", function () {
@@ -52,9 +50,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
             ToggleClass(elem, "pins__clicked");
             // Check if there are other elements that depend on this one (For example: The Neck depends on the North but not the other way around)
             QueryRegion(elem);
-
         });
+        cities.push(elem.id.split("_").join(" "));
     });
+    
 
     // For each continent title
     all_continents.forEach(function (elem) {
@@ -69,30 +68,34 @@ document.addEventListener("DOMContentLoaded", function (event) {
             ToggleClass(elem.parentElement, "continent__clicked");
             QueryRegion(elem.parentElement);
         });
+        regions.push(elem.id.split("_").join(" "));
     });
 //#endregion
 
 
 MeasureScrollBar();
 
+    function MeasureScrollBar() {
+        // Create the measurement node
+        var scrollDiv = document.createElement("div");
+        scrollDiv.className = "scrollbar-measure";
+        document.body.appendChild(scrollDiv);
+        // Get the scrollbar width
+        var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+        console.info(scrollbarWidth);
+        // Delete the DIV 
+        document.body.removeChild(scrollDiv);
+        // Now we can use this scrollbarWidth for some elements:
+        var svg__tools__box = document.querySelector(".svg__tools");
+        svg__tools__box.style.bottom = 30 + scrollbarWidth + "px";
+    }
+
 });
 
 
-function MeasureScrollBar() {
-    // Create the measurement node
-    var scrollDiv = document.createElement("div");
-    scrollDiv.className = "scrollbar-measure";
-    document.body.appendChild(scrollDiv);
-    // Get the scrollbar width
-    var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-    console.info(scrollbarWidth);
-    // Delete the DIV 
-    document.body.removeChild(scrollDiv);
-    // Now we can use this scrollbarWidth for some elements:
-    var svg__tools__box = document.querySelector(".svg__tools");
-    svg__tools__box.style.bottom = 30 + scrollbarWidth + "px";
-}
 
+
+//#region "Classes"
 function ToggleClass(element, class_1, class_2) {
     class_2 = typeof class_2 === "undefined" ? "" : class_2;
     // Check if element contains the class to remove
@@ -114,14 +117,9 @@ function ToggleClass(element, class_1, class_2) {
 function RemoveClass(element, class_to_remove) {
     element.classList.remove(class_to_remove);
 }
+
 function AddClass(element, class_to_add) {
     element.classList.add(class_to_add);
-}
-
-// Function to set remove all the classes to the default
-function ResetAllClasses() {
-    RemoveClassOnMultipleElements(all_lands, "land__clicked");
-    RemoveClassOnMultipleElements(all_continent_parents, "continent__clicked");
 }
 
 function ToggleClassOnMultipleElements(element_array, class_name) {
@@ -142,6 +140,13 @@ function AddClassOnMultipleElements(element_array, class_name) {
     });
 }
 
+// Function to set remove all the classes to the default
+function ResetAllClasses() {
+    RemoveClassOnMultipleElements(all_lands, "land__clicked");
+    RemoveClassOnMultipleElements(all_continent_parents, "continent__clicked");
+}
+//#endregion
+
 function CheckDependencies(type, elem) {
     // An element that's a child of someone, gets a special class ".part_of_PARENT_ID"
     var class_name = ".part_of_" + elem.id;
@@ -161,9 +166,9 @@ function CheckDependencies(type, elem) {
         default:
             break;
     }
+
+
 }
-
-
 
 
 // WORKING ON IT
@@ -186,3 +191,4 @@ function ScrollToElement(element_query) {
     console.log("New position:")
     console.log("Horizontal: " + papa.scrollLeft + " | Vertical: " + papa.scrollTop)
 }
+

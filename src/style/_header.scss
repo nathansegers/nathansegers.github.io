@@ -41,6 +41,7 @@ header.header {
             display: inline-block;
             height: 100%;
             width: calc(100% - (16px + 30px));
+            max-width: calc(100% - (16px + 30px));
             
             padding: 15px 0;
             
@@ -66,6 +67,7 @@ header.header {
             line-height: 1.75em;
             height: auto;
             width: 100%;
+            max-width: 100%;
             color: lighten($white, 5);
             text-align: left;
             background-color: rgba($color-regal_red__lighter, 0.9);
@@ -73,8 +75,21 @@ header.header {
             text-align: left;
             font-size: 1rem;
             box-sizing: border-box;
-            & .search_option {
+            & strong {
+                font-weight: bolder;
+            }
+            & .search__option {
                 display: block;
+                cursor: pointer;
+            }
+            & .search__option__group__title {
+                & span {
+                    font-size: 1.125em;
+                    text-transform: uppercase;
+                    font-weight: bolder;
+                    line-height: 1em;
+                    border-bottom: 1px solid $white;
+                }
             }
         }
         & .header__search_bar__result:before {

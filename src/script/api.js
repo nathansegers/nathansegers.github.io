@@ -56,9 +56,7 @@ function QueryRegion(elem) {
     all_characters.length = 0;
     
     // Remove all the items
-    while (card__wrapper.firstChild) {
-        card__wrapper.removeChild(card__wrapper.firstChild);
-    }
+    ClearElementsChildren(card__wrapper);
 
     // Our keys are made out of all the Land / Continent id's
     var key_to_search_for = elem.id;
@@ -126,9 +124,7 @@ function ProcessAPIResult(result, query_page, query_parameter) {
         console.info("\r\n\r\n ----- We have finished our calls, NOW PROCEED!!! ----- \r\n\r\n");
         // Now that we got everything, we can do something with it
         // Remove all the items
-        while (card__wrapper.firstChild) {
-            card__wrapper.removeChild(card__wrapper.firstChild);
-        }
+        ClearElementsChildren(card__wrapper);
         UpdateCardsWithCharacters(0, 8);
     }
 
@@ -137,6 +133,13 @@ function ProcessAPIResult(result, query_page, query_parameter) {
 // Here we will create an article for each character that we wish to display
 var min_value = 0;
 var max_value = 0;
+
+function ClearElementsChildren(element) {
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
+}
+
 function UpdateCardsWithCharacters(min, max) {
     var load_more_card = document.querySelector('.load_more_characters');
     if (document.body.contains(load_more_card) === true) {
