@@ -15,6 +15,7 @@ header.header {
     box-sizing: border-box;
     flex-direction: row;
     flex-flow: row;
+    align-items: center;
 
     & .header__title {
         display: inline-block;
@@ -25,6 +26,8 @@ header.header {
         font-family: "Smooth Papyrus";
         font-size:  2rem;
         color: $white;
+        
+        flex-shrink: 0;
     }
     & .header__search_bar {
         position: relative;
@@ -129,16 +132,17 @@ input::-moz-placeholder {
     opacity: 1;
     text-shadow: none;
 }
-@media screen and (max-width: 1068px) {
 
+header.header > .header__title.hidden {
+    display: none;
 }
 
-@media screen and (max-width: 768px) {
-    
-}
-
-@media screen and (max-width: 568px) {
-    header.header .header__title {
-        font-size: 1.25rem;
+@media screen and (max-width: 535px) {
+    header.header .header__search_bar:not(.search_bar_opened) {
+        background: transparent;
+        text-align: right;
+        .header__search_bar__input{
+            display: none;
+        }
     }
 }

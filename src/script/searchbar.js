@@ -1,14 +1,29 @@
 var search_bar = document.querySelector(".header__search_bar__input");
 var search_bar_results = document.querySelector(".header__search_bar__result");
 var globalTimeout = null;
+var header_title = document.querySelector(".header__title");
+var header__search_bar = document.querySelector(".header__search_bar");
+document.addEventListener("DOMContentLoaded", function() {
+    header__search_bar.addEventListener("click", function () {
+        if (window.outerWidth <= 535) {
+            AddClass(header__search_bar, "search_bar_opened");
+            AddClass(header_title, "hidden");
+        }
+    });
+});
+
+
 search_bar.addEventListener('input', function (e) {
-    if (e.target.value.length <= 1) {
+    if (e.target.value.length == 0) {
         // When something is typed, set the search_bar to open
         RemoveClass(search_bar_results, "opened");
+        RemoveClass(header_title, "hidden");
     }
-    // Allow the user to type something
-    if (e.target.value.length > 2) {
-        
+    if (e.target.value.length > 1) {
+        if (window.outerWidth <= 675) {
+            console.log("Resetting font-size");
+            AddClass(header_title, "hidden");
+        }
         // Clear the object
         AddClass(search_bar_results, "opened");
         ClearElementsChildren(search_bar_results);

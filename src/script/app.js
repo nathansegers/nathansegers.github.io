@@ -77,26 +77,35 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
 //#endregion
 
-
 MeasureScrollBar();
 
-    function MeasureScrollBar() {
-        // Create the measurement node
-        var scrollDiv = document.createElement("div");
-        scrollDiv.className = "scrollbar-measure";
-        document.body.appendChild(scrollDiv);
-        // Get the scrollbar width
-        var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-        console.info(scrollbarWidth);
-        // Delete the DIV 
-        document.body.removeChild(scrollDiv);
-        // Now we can use this scrollbarWidth for some elements:
-        var svg__tools__box = document.querySelector(".svg__tools");
-        svg__tools__box.style.bottom = 30 + scrollbarWidth + "px";
-    }
+window.addEventListener("resize", function() {
+    console.log("Resizing");
+    MeasureScrollBar();
+});
 
 });
 
+
+
+function MeasureScrollBar() {
+    // Create the measurement node
+    var scrollDiv = document.createElement("div");
+    scrollDiv.className = "scrollbar-measure";
+    document.body.appendChild(scrollDiv);
+    // Get the scrollbar width
+    var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+    // Delete the DIV 
+    document.body.removeChild(scrollDiv);
+    // Now we can use this scrollbarWidth for some elements:
+    var svg__tools__box = document.querySelector(".svg__tools");
+    var footer_height = document.querySelector(".footer").clientHeight;
+    if (window.innerWidth  <= 1068) {
+        svg__tools__box.style.bottom = footer_height + "px";
+    } else {
+        svg__tools__box.style.bottom = footer_height + scrollbarWidth + "px";
+    }
+}
 
 
 
