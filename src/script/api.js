@@ -133,17 +133,14 @@ function ProcessAPIResult(result, query_type, query_page, query_size, query_filt
     }
 
 }
-
-// Here we will create an article for each character that we wish to display
-var min_value = 0;
-var max_value = 0;
-
 function ClearElementsChildren(element) {
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
 }
-
+// Here we will create an article for each character that we wish to display
+var min_value = 0;
+var max_value = 0;
 function UpdateCardsWithCharacters(min, max) {
     if( all_characters.length == 0 ) {
         ClearElementsChildren(search_bar_results);
@@ -151,16 +148,11 @@ function UpdateCardsWithCharacters(min, max) {
     } else {
         RemoveClass(search_bar_results, "opened");
     }
-    var load_more_card = document.querySelector('.load_more_characters');
-    if (document.body.contains(load_more_card) === true) {
-        if (max_value > all_characters.length) {
-            AddClass(load_more_card, "hidden");
-        }
-    }
     min_value = min;
     max_value = max;
     page_size = max - min;
     console.info("Load from: " + min_value + " untill " + max_value);
+
     if (all_characters.length <= 9) {
         var array_to_show = all_characters;
     } else {
@@ -168,15 +160,20 @@ function UpdateCardsWithCharacters(min, max) {
     }
     
     // Setup the next page card
-    if ((all_characters.length > 9) && (document.body.contains(load_more_card) === false)) {
+    if ((all_characters.length > 9) && (document.body.contains(document.querySelector('.load_more_characters')) === false)) {
         AddObjectsToElement(card__wrapper, "article.card.load_more_characters > section.card__section > h1{Load next page of characters}");
-        document.querySelector('.load_more_characters').addEventListener("click", function () {
+        var load_more_card = document.querySelector('.load_more_characters');
+        load_more_card.addEventListener("click", function () {
             if (page_size == 8) {
-                UpdateCardsWithCharacters(min_value + page_size, max_value + page_size + 1);                
+                UpdateCardsWithCharacters(min_value + page_size, max_value + page_size + 1);
             } else {
-                UpdateCardsWithCharacters(min_value + page_size, max_value + page_size);                                
+                UpdateCardsWithCharacters(min_value + page_size, max_value + page_size);
             }
         });
+    }
+    // Hide the card when we have reached the maximum amount
+    if (max_value >= all_characters.length) {
+        AddClass(document.querySelector('.load_more_characters'), "hidden");
     }
 
     // Build an article for every item
@@ -184,10 +181,6 @@ function UpdateCardsWithCharacters(min, max) {
         BuildArticle(object);
     });
 
-}
-
-function DOMText(text) {
-    return document.createTextNode(text);
 }
 
 var i = 0;
