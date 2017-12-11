@@ -1,5 +1,6 @@
 var search_bar = document.querySelector(".header__search_bar__input");
 var search_bar_results = document.querySelector(".header__search_bar__result");
+var globalTimeout = null;
 search_bar.addEventListener('input', function (e) {
     if (e.target.value.length <= 1) {
         // When something is typed, set the search_bar to open
@@ -7,6 +8,7 @@ search_bar.addEventListener('input', function (e) {
     }
     // Allow the user to type something
     if (e.target.value.length > 2) {
+        
         // Clear the object
         AddClass(search_bar_results, "opened");
         ClearElementsChildren(search_bar_results);
@@ -24,7 +26,6 @@ search_bar.addEventListener('input', function (e) {
        
     }
 });
-
 
 function SearchElement(search_value, type) {
     type = typeof type === "undefined" ? "" : type;
@@ -45,6 +46,25 @@ function SearchElement(search_value, type) {
         case "cult":
             SearchInArray(unique_cultures, "Cultures");
             break;
+        case "character":
+        case "char":
+        case "person":
+            AddObjectsToElement(search_bar_results, "i.fa.fa-spinner.fa-pulse.fa-4x + span{Please wait while we search that character!}");                                
+        // AddObjectsToElement(search_bar_results, "div.text-warning > span{We are searching for the character named: '" + search_value +"', please be patient!}");
+            if (globalTimeout != null) clearTimeout(globalTimeout);
+                globalTimeout = setTimeout(function() {
+                    if (search_value != "") {
+                        console.log("We can continue now ...");
+                        times_to_call_api = 1;
+                        all_characters.length = 0;
+                        APICall("characters", 0, 50, "&Name=", search_value);
+                    } else {
+                        console.log("Waiting for a value to be entered");
+                    }
+            }, 500);
+            
+
+        break;
 
         default:
             SearchInArray(regions, "Regions");

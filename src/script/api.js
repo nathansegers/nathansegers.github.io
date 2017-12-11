@@ -12,8 +12,8 @@ var card__wrapper = document.querySelector(".card__wrapper");
 function APICall(type, page, page_size, query_filter, query_parameter) {
     var can_continue = false;
     var type = type.toLowerCase();
-    if (type != "characters" && type != "books" && type != "houses") {
-        console.warn("You entered an incorrect value.");
+    if (type != "characters" && type != "books" && type != "houses" && query_parameter != "" && query_parameter != undefined && query_parameter != null) {
+        console.warn("Please enter a value to query.");
     } else {
         // Correct value, so we can continue
         console.info("\r\nQuery called.")
@@ -36,7 +36,7 @@ function APICall(type, page, page_size, query_filter, query_parameter) {
                     if (result != null) {
                         // console.info(result);
                         console.info("\r\nWe got the result, now processing...\r\n");
-                        ProcessAPIResult(result, page, query_parameter);
+                        ProcessAPIResult(result, type, page, page_size, query_filter, query_parameter);
                     }
                 }
             };
@@ -103,15 +103,14 @@ function QueryRegion(elem, culture) {
     }
 }
 
-
 // We need all these parameters to do the query again
-function ProcessAPIResult(result, query_page, query_parameter) {
+function ProcessAPIResult(result, query_type, query_page, query_size, query_filter, query_parameter) {
     // Push the items into the array
     all_characters.push.apply(all_characters, result);
 
     console.info("Added " + result.length + " characters.")
 
-    if (result.length < $QUERY_SIZE) {
+    if (result.length < query_size) {
         console.info("Added all characters of " + query_parameter);
         console.info("\r\n");
         console.info(all_characters);
@@ -122,7 +121,7 @@ function ProcessAPIResult(result, query_page, query_parameter) {
         // Set new page index
         query_page = query_page + 1;
         console.info("Proceed to page: " + query_page);
-        APICall($QUERY_TYPE, query_page, $QUERY_SIZE, $QUERY_FILTER, query_parameter);
+        APICall(query_type, query_page, query_size, query_filter, query_parameter);
     }
 
     if (times_to_call_api == 0) {
@@ -146,6 +145,12 @@ function ClearElementsChildren(element) {
 }
 
 function UpdateCardsWithCharacters(min, max) {
+    if( all_characters.length == 0 ) {
+        ClearElementsChildren(search_bar_results);
+        AddObjectsToElement(search_bar_results, "i.fa.fa-exclamation-circle.fa-4x + span{We did not find any character with that name!}");                                
+    } else {
+        RemoveClass(search_bar_results, "opened");
+    }
     var load_more_card = document.querySelector('.load_more_characters');
     if (document.body.contains(load_more_card) === true) {
         if (max_value > all_characters.length) {
