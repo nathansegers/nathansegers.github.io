@@ -62,8 +62,6 @@ function SearchElement(search_value, type) {
                         console.log("Waiting for a value to be entered");
                     }
             }, 500);
-            
-
         break;
 
         default:
@@ -74,7 +72,7 @@ function SearchElement(search_value, type) {
     }
     
     if (counters["Number-1"] == 0 && counters["Number-2"] == 0 && counters["Number-3"] == 0) {
-        AddObjectsToElement(search_bar_results, "div.text-warning > span{We did not find anything with that query. Please try something else or be more specific&DOT;}");                        
+        AddObjectsToElement(search_bar_results, "div.text-warning > span{We did not find anything with that query&DOT; Please try something else or be more specific&DOT;}");                        
     }
 
     function SearchInArray(array_name, type) {
