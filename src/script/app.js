@@ -2,6 +2,12 @@
 console.info("Hello there!")
 document.addEventListener("DOMContentLoaded", function (event) {
 
+
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        alert("You're working on a mobile browser");
+        document.querySelectorAll(".svg__tools__label")[0].style.display = hidden;
+    }
+
 //#region "SETUP"
     // We load all the elements into our variables
     all_lands = document.querySelectorAll("[class*=land_]");
