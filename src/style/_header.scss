@@ -146,3 +146,14 @@ header.header > .header__title.hidden {
         }
     }
 }
+
+@media screen and (max-width: 390px) {
+    header.header .header__title {
+        font-size: 1.25rem;
+    }
+}
+@media screen and (max-width: 275px) {
+    header.header .header__title {
+        font-size: 1rem;
+    }
+}
