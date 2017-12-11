@@ -49,7 +49,7 @@ function SearchElement(search_value, type) {
         case "character":
         case "char":
         case "person":
-            AddObjectsToElement(search_bar_results, "i.fa.fa-spinner.fa-pulse.fa-4x + span{Please wait while we search that character!}");                                
+            AddObjectsToElement(search_bar_results, "i.fa.fa-spinner.fa-pulse.fa-4x + span{Please wait while we search that character&DOT;&DOT;&DOT;}");                                
         // AddObjectsToElement(search_bar_results, "div.text-warning > span{We are searching for the character named: '" + search_value +"', please be patient!}");
             if (globalTimeout != null) clearTimeout(globalTimeout);
                 globalTimeout = setTimeout(function() {
@@ -74,7 +74,7 @@ function SearchElement(search_value, type) {
     }
     
     if (counters["Number-1"] == 0 && counters["Number-2"] == 0 && counters["Number-3"] == 0) {
-        AddObjectsToElement(search_bar_results, "div.text-warning > span{We did not find anything with that query, please try something else or be more specific}");                        
+        AddObjectsToElement(search_bar_results, "div.text-warning > span{We did not find anything with that query. Please try something else or be more specific&DOT;}");                        
     }
 
     function SearchInArray(array_name, type) {

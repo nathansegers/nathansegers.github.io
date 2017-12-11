@@ -15,7 +15,7 @@ function CreateHTMLObject(object_reference) {
             if (element.includes('{')) {
                 StartPos = element.search('{');
                 StopPos = element.search('}');
-                text = document.createTextNode(element.substring(StartPos + 1, StopPos));                
+                text = document.createTextNode(element.substring(StartPos + 1, StopPos).split("&DOT;").join("."));
                 parent.classList.add(element.substring(0, StartPos));
                 parent.appendChild(text);
             } else {
@@ -34,7 +34,7 @@ function CreateHTMLObject(object_reference) {
             StartPos = object.search('{');
             StopPos = object.search('}');
             // Child element was between those two brackets
-            text = document.createTextNode(object.substring(StartPos + 1, StopPos));
+            text = document.createTextNode(object.substring(StartPos + 1, StopPos).split("&DOT;").join("."));
             // If we already have a parent, just add the text
             if (parent != "") {
                 parent.appendChild(text);
