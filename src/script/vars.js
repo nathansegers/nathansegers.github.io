@@ -23,7 +23,7 @@ var cultures = {
     "Old_Ghis": "Ghiscari",
     "The_Neck": "Crannogmen",
     "Asshai": "Asshai",
-    "Tyrish": "Tyroshi",
+    "Tyrosh": "Tyroshi",
     "Myr": "Myrish",
     "Thenn": "Thenn",
     "The_Land_of_Always_Winter": ["Free Folk", "Thenn"],

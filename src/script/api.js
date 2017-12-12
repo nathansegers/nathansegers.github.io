@@ -172,7 +172,7 @@ function UpdateCardsWithCharacters(min, max) {
         });
     }
     // Hide the card when we have reached the maximum amount
-    if (max_value >= all_characters.length) {
+    if (max_value >= all_characters.length && (document.body.contains(document.querySelector('.load_more_characters')) === true)) {
         AddClass(document.querySelector('.load_more_characters'), "hidden");
     }
 
