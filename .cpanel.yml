@@ -1,4 +1,4 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/godofneo/public_html/godofneon.be/
+    - export DEPLOYPATH=/home/godofneo/public_html/godofneon.be
