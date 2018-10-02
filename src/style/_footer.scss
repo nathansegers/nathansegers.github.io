@@ -13,6 +13,9 @@ footer {
         padding: calc((#{$footer_height} - 16px) / 2) 0px;
         line-height: 16px;
         color: $white;
+        & a {
+            color: $white;
+        }
     }
 }
 @media screen and (max-width: 578px) {
